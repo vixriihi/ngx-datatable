@@ -228,7 +228,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     return this._bodyHeight;
   }
 
-  @Output() scroll: EventEmitter<any> = new EventEmitter();
+  @Output() bodyscroll: EventEmitter<any> = new EventEmitter();
   @Output() page: EventEmitter<any> = new EventEmitter();
   @Output() activate: EventEmitter<any> = new EventEmitter();
   @Output() select: EventEmitter<any> = new EventEmitter();
@@ -365,7 +365,14 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     // if scroll change, trigger update
     // this is mainly used for header cell positions
     if (this.offsetY !== scrollYPos || this.offsetX !== scrollXPos) {
-      this.scroll.emit({
+      this.offsetY = scrollYPos;
+      this.offsetX = scrollXPos;
+
+      this.updateIndexes();
+      this.updatePage(event.direction);
+      this.updateRows();
+
+      this.bodyscroll.emit({
         offsetY: scrollYPos,
         offsetX: scrollXPos
       });
